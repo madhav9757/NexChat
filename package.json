@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.28.1",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.25.4",
@@ -18,6 +19,7 @@
     "next": "15.4.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "svix": "^1.69.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
