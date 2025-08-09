@@ -3,7 +3,7 @@
 import ConversationFallback from "@/components/shared/conversation/ConversationFallback";
 import ItemList from "@/components/shared/item-list/ItemList";
 import React from "react";
-import AddFileDialog from "./_components/addFileDialog";
+import AddFileDialog from "./_components/AddFileDialog";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
