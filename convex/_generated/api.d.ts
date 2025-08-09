@@ -15,8 +15,11 @@ import type {
 } from "convex/server";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
+import type * as request from "../request.js";
+import type * as requests from "../requests.js";
 import type * as task from "../task.js";
 import type * as user from "../user.js";
+import type * as utils from "../utils.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -29,8 +32,11 @@ import type * as user from "../user.js";
 declare const fullApi: ApiFromModules<{
   http: typeof http;
   messages: typeof messages;
+  request: typeof request;
+  requests: typeof requests;
   task: typeof task;
   user: typeof user;
+  utils: typeof utils;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

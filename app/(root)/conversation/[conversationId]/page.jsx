@@ -1,8 +1,8 @@
-import React from 'react'
+import ConversationContainer from '@/components/shared/conversation/ConversationContainer'
 
 const conversation = () => {
   return (
-    <div>conversation</div>
+    <ConversationContainer>conversation</ConversationContainer>
   )
 }
 

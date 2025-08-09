@@ -2,6 +2,8 @@ import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import AppShell from "@/components/AppShell";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { ThemeProvider } from "@/components/ui/theme/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +22,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppShell>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
-        </AppShell>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppShell>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+            <Toaster richColors />
+          </AppShell>
+        </ThemeProvider>
       </body>
     </html>
   );

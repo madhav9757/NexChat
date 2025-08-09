@@ -4,53 +4,68 @@ import React from 'react'
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@radix-ui/react-tooltip'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { useNavigation } from '@/hooks/useNavigation'
 import { UserButton } from '@clerk/nextjs'
-import { cn } from '@/lib/utils'
+import { ModeToggle } from '@/components/ui/theme/ThemeToggle'
+import { Badge } from '@/components/ui/badge'
 
 const DesktopNav = () => {
-    const paths = useNavigation()
+  const paths = useNavigation()
 
-    return (
-        <Card className="hidden lg:flex lg:flex-col lg:justify-between lg:items-center lg:h-full lg:w-16 lg:px-2 lg:py-4 shadow-md">
-            <nav className="w-full">
-                <ul className="flex flex-col items-center gap-4">
-                    {paths.map(({ href, icon, name, active }, index) => (
-                        <li key={index} className="relative">
-                            <Tooltip delayDuration={100}>
-                                <TooltipTrigger asChild>
-                                    <Link href={href} aria-label={name}>
-                                        <Button
-                                            size="icon"
-                                            variant={active ? 'default' : 'ghost'}
-                                            className="w-10 h-10"
-                                        >
-                                            {icon}
-                                        </Button>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    side="right"
-                                    className={cn(
-                                        "bg-purple-500 text-white rounded-md px-3 py-1.5 text-sm shadow-lg",
-                                        "animate-fade-in"
-                                    )}
-                                    sideOffset={8}
-                                >
-                                    {name}
-                                </TooltipContent>
-                            </Tooltip>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+  return (
+    <TooltipProvider>
+      <Card className="hidden lg:flex lg:flex-col lg:justify-between lg:items-center h-full w-16 px-2 py-4 shadow-md border border-border/50 bg-background">
 
-            <div className="flex flex-col items-center gap-4">
-                <UserButton />
-            </div>
-        </Card>
-    )
+        {/* Navigation Section */}
+        <nav className="w-full">
+          <ul className="flex flex-col items-center gap-4">
+            {paths.map(({ href, icon, name, active, count }, index) => (
+              <li key={index} className="relative">
+                {active && (
+                  <span className="absolute left-[-10px] top-1/2 -translate-y-1/2 h-6 w-1 rounded bg-primary" />
+                )}
+
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={href}
+                      aria-label={name}
+                      aria-current={active ? 'page' : undefined}
+                      className="relative"
+                    >
+                      <Button
+                        size="icon"
+                        variant={active ? 'default' : 'ghost'}
+                        className="w-10 h-10 relative"
+                      >
+                        {icon}
+                        {count > 0 && (
+                          <Badge
+                            className="absolute -top-1 -right-1 text-xs font-bold px-1 py-0 h-4 min-w-[1rem] flex items-center justify-center rounded-full"
+                            variant="destructive"
+                          >
+                            {count}
+                          </Badge>
+                        )}
+                      </Button>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">{name}</TooltipContent>
+                </Tooltip>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Footer Section */}
+        <div className="flex flex-col items-center gap-y-6">
+          <ModeToggle />
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      </Card>
+    </TooltipProvider>
+  )
 }
 
 export default DesktopNav
