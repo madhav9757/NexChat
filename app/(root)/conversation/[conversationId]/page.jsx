@@ -1,8 +1,24 @@
-import ConversationContainer from '@/components/shared/conversation/ConversationContainer'
+"use client"
 
-const conversation = () => {
+import ConversationContainer from '@/components/shared/conversation/ConversationContainer'
+import { api } from '@/convex/_generated/api'
+import { useQuery } from 'convex/react'
+import Header from './_components/Header'
+import { id } from 'zod/v4/locales'
+
+const conversation = ({params}) => {
+
+  const conversationId = params.id ;
+  const conversation = useQuery(api.conversation.get, {id: conversationId}) ;
+
+  if (!conversation) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <ConversationContainer>conversation</ConversationContainer>
+    <ConversationContainer>
+      <Header otherMember={conversation.otherMember} />
+    </ConversationContainer>
   )
 }
 
