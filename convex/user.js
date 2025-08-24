@@ -30,3 +30,9 @@ export const get = internalQuery({
     },
 })
 
+export const getById = internalQuery({
+    args: { id: v.id("users") },
+    async handler(ctx, args) {
+        return await ctx.db.get(args.id);
+    },
+});

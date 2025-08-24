@@ -6,7 +6,7 @@ export const get = query({
     args: {
         id: v.id("conversations")
     },
-    handler: async (ctx) => {
+    handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
 
         if (!identity) {
@@ -37,7 +37,7 @@ export const get = query({
         const allConversationMemberships = await ctx.db
             .query("conversationMembers")
             .withIndex("byConversationId", (q) => q.eq("conversationId", conversation._id))
-            .collect;
+            .collect();
 
         if (!conversation.isGroup) {
             const otherMembership = allConversationMemberships.filter(
