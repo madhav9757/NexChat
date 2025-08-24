@@ -5,7 +5,7 @@ import { api } from '@/convex/_generated/api';
 import { useQuery } from 'convex/react';
 import { Loader2, MessageSquare } from 'lucide-react';
 import React from 'react';
-import DMConversationItem from './_components/DMConversationItem';
+import DMConversationItem from './_components/DMconversationItem.jsx';
 
 const Layout = ({ children }) => {
   const conversations = useQuery(api.conversations.get);
