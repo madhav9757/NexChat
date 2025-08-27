@@ -1,19 +1,55 @@
-// convex/messages.js
+import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
+import { getUserByClerkId } from "./utils";
 
-export const getForConversation = query({
-  args: { conversationId: v.id("conversations") }, // validate conversationId
+export const get = query({
+  args: {
+    id: v.id("conversations")
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new ConvexError("Unauthorized");
     }
 
-    // Fetch all messages for this conversation
-    return await ctx.db
+    const currentUser = await getUserByClerkId(ctx, identity.subject);
+    if (!currentUser) {
+      throw new ConvexError("User Not Found!");
+    }
+
+    const membership = await ctx.db
+      .query("conversationMembers")
+      .withIndex("byMemberIdConversationId", (q) => q.eq("memberId", currentUser._id).eq("conversationId", args.id))
+      .unique();
+
+    if (!membership) {
+      throw new ConvexError("User is not a member of this conversation");
+    }
+
+    const messages = await ctx.db
       .query("messages")
-      .filter((q) => q.eq(q.field("conversationId"), args.conversationId))
-      .order("asc") // optional: sort oldest → newest
+      .withIndex("byConversationId", (q) =>
+        q.eq("conversationId", args.id)
+      )
+      .order("desc")
       .collect();
+
+    const messagesWithUsers = await Promise.all(
+      messages.map(async (message) => {
+        const messageSender = await ctx.db.get(message.senderId);
+        if (!messageSender) {
+          throw new ConvexError("could not find message sender");
+        }
+
+        return {
+          message,
+          senderImage: messageSender.imgUrl,
+          senderName: messageSender.username,
+          isCurrentUser: messageSender._id === currentUser._id
+        };
+      })
+    );
+
+    return messagesWithUsers;
   },
 });

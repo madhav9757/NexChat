@@ -23,7 +23,7 @@ export default function ConversationPage({ params }) {
   return (
     <ConversationContainer>
       <Header otherMember={conversation.otherMember} />
-      <Body conversationId={conversationId} />
+      <Body  />
       <ChatInput conversationId={conversationId} currentUserId={conversation.currentUserId} />
     </ConversationContainer>
   );
