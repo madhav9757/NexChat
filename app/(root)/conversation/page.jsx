@@ -5,7 +5,7 @@ import ConversationFallback from "@/components/shared/conversation/ConversationF
 
 const ConversationPage = () => {
   return (
-    <div className="h-full w-full flex items-center justify-center">
+    <div className="h-full hidden lg:flex w-full items-center justify-center">
       <ConversationFallback />
     </div>
   );

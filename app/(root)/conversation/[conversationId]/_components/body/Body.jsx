@@ -6,7 +6,6 @@ import { useQuery } from "convex/react";
 import React from "react";
 import Messages from "./Messages";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 
 const Body = () => {
   const { conversationId } = useConversation();
@@ -29,8 +28,8 @@ const Body = () => {
   }
 
   return (
-    <ScrollArea className="flex-1 w-full p-4 hide-scrollbar">
-      <div className="flex flex-col-reverse gap-2">
+    <ScrollArea className="flex-1 w-full p-4 no-scrollbar">
+      <div className="flex flex-col-reverse gap-2 no-scrollbar">
         {messages.map((msg, index) => {
           const lastByUser =
             index === 0 || messages[index - 1].isCurrentUser !== msg.isCurrentUser;
