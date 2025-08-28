@@ -58,7 +58,7 @@
     };
 
     return (
-      <Card className="w-full p-3 rounded-lg border-t bg-background">
+      <Card className="w-full p-1.5 rounded-lg border-t bg-background">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}

@@ -22,9 +22,23 @@ export default function ConversationPage({ params }) {
 
   return (
     <ConversationContainer>
-      <Header otherMember={conversation.otherMember} />
-      <Body  />
-      <ChatInput conversationId={conversationId} currentUserId={conversation.currentUserId} />
+      {/* Header (fixed height) */}
+      <div className="shrink-0">
+        <Header otherMember={conversation.otherMember} />
+      </div>
+
+      {/* Body (fills remaining space) */}
+      <div className="flex-1 overflow-y-auto">
+        <Body />
+      </div>
+
+      {/* Chat Input (fixed height) */}
+      <div className="shrink-0">
+        <ChatInput
+          conversationId={conversationId}
+          currentUserId={conversation.currentUserId}
+        />
+      </div>
     </ConversationContainer>
   );
 }

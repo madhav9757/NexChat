@@ -1,10 +1,12 @@
-'use client'
+"use client";
 
-import { api } from '@/convex/_generated/api';
-import { useConversation } from '@/hooks/useConversation';
-import { useQuery } from 'convex/react';
-import React from 'react';
-import Messages from './Messages';
+import { api } from "@/convex/_generated/api";
+import { useConversation } from "@/hooks/useConversation";
+import { useQuery } from "convex/react";
+import React from "react";
+import Messages from "./Messages";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const Body = () => {
   const { conversationId } = useConversation();
@@ -18,8 +20,6 @@ const Body = () => {
     );
   }
 
-  console.log("messages : ", messages)
-
   if (messages.length === 0) {
     return (
       <div className="flex-1 w-full flex items-center justify-center text-gray-500">
@@ -29,32 +29,27 @@ const Body = () => {
   }
 
   return (
-    <div className="flex-1 w-full overflow-y-scroll flex flex-col-reverse gap-2 no-scrollbar p-4">
-
-      {messages.map((msg, index) => {
-        const prev = messages[index - 1];
-        const next = messages[index + 1];
-
-        // same sender checks
-        const isSameAsPrev = prev?.message.senderId === msg.message.senderId;
-        const isSameAsNext = next?.message.senderId === msg.message.senderId;
-
-        return (
-          <Messages
-            key={msg.message._id}
-            fromCurrentUser={msg.isCurrentUser}
-            senderImage={msg.senderImage}
-            senderName={msg.senderName}
-            lastByUser={!isSameAsNext}
-            showTimestamp={!isSameAsPrev}  
-            content={msg.message.content}
-            createdAt={msg.message._creationTime}
-            type={msg.message.type}
-          />
-        );
-      })}
-    </div>
+    <ScrollArea className="flex-1 w-full p-4 hide-scrollbar">
+      <div className="flex flex-col-reverse gap-2">
+        {messages.map((msg, index) => {
+          const lastByUser =
+            index === 0 || messages[index - 1].isCurrentUser !== msg.isCurrentUser;
+          return (
+            <Messages
+              key={msg.message._id}
+              fromCurrentUser={msg.isCurrentUser}
+              senderImage={msg.senderImage}
+              senderName={msg.senderName}
+              content={msg.message.content}
+              createdAt={msg.message._creationTime}
+              type={msg.message.type}
+              lastByUser={lastByUser}
+            />
+          );
+        })}
+      </div>
+    </ScrollArea>
   );
 };
 
-      export default Body;
+export default Body;

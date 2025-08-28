@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Avatar } from "@radix-ui/react-avatar";
+import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Messages = ({
   fromCurrentUser,
   senderImage,
   senderName,
   lastByUser,
-  showTimestamp,
   content,
   createdAt,
   type,
 }) => {
+  const [showTimestamp, setShowTimestamp] = useState(false);
+
   const formatDate = (timestamp) => {
     try {
       return format(new Date(timestamp), "HH:mm");
@@ -21,48 +25,21 @@ const Messages = ({
 
   return (
     <div
-      className={`flex items-end gap-2 px-2 ${fromCurrentUser ? "justify-end" : "justify-start"
-        }`}
+      className={cn(`flex items-end`, { "justify-end": fromCurrentUser })}
     >
-      {!fromCurrentUser && !lastByUser && (
-        <img
-          src={senderImage}
-          alt={`${senderName}'s avatar`}
-          loading="lazy"
-          className="w-8 h-8 rounded-full self-end"
-        />
-      )}
+      <div className={cn(`flex flex-col w-full mx-2`, { "order-1 items-end": fromCurrentUser, "order-2 items-start": !fromCurrentUser })}>
+        <div className={cn("px-4 py-2 rounded-lg max-w-[70%]", { "bg-primary text-primary-foreground": fromCurrentUser, "bg-secondary text-secondary-foreground": !fromCurrentUser, "rounded-br-none": !lastByUser && fromCurrentUser, "rounded-bl-none": !lastByUser && !fromCurrentUser })}>
 
-      <div
-        className={`max-w-[70%] px-3 py-2 text-sm shadow-sm
-          ${fromCurrentUser
-            ? "bg-blue-500 text-white rounded-2xl"
-            : "bg-gray-200 text-gray-900 rounded-2xl"
-          }
-        `}
-      >
-        {!fromCurrentUser && !lastByUser && (
-          <p className="text-xs font-semibold mb-1">{senderName}</p>
-        )}
-
-        {/* Content */}
-        {Array.isArray(content) ? (
-          <p>{content.join(" ")}</p>
-        ) : (
-          <p>{content}</p>
-        )}
-
-        {/* Only show timestamp if last in group */}
-        {showTimestamp && (
-          <p
-            className={`text-[10px] mt-1 text-right ${fromCurrentUser ? "text-gray-200" : "text-gray-500"
-              }`}
-          >
-            {formatDate(createdAt)}
-          </p>
-        )}
+          {type === "text" ? <p className="text-wrap break-words whitespace-pre-wrap">{content}</p> : null}
+          <p className={cn("text-xs flex w-full my-1", { "text-primary-foreground justify-end": fromCurrentUser, "text-secondary-foreground justify-start": !fromCurrentUser })}>{formatDate(createdAt)}</p>
+        </div>
       </div>
+      <Avatar className={cn("relative w-8 h-8", {"order-2": fromCurrentUser, "order-1": !fromCurrentUser, invisible: lastByUser})}>
+        <AvatarImage src={senderImage} alt={senderName} />
+        <AvatarFallback>{senderName ? senderName.charAt(0) : "?"}</AvatarFallback>
+      </Avatar>
     </div>
   );
 };
+
 export default Messages;

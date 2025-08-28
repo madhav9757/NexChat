@@ -3,10 +3,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  @apply bg-background text-foreground font-sans;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+code,
+pre {
+  @apply font-mono;
+}
+
 body,
 html {
   height: 100vh;
-  overflow: auto;
 }
 
 @theme inline {
@@ -127,4 +136,13 @@ html {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
