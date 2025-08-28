@@ -16,6 +16,7 @@ pre {
 body,
 html {
   height: 100vh;
+  overflow-y: hidden;
 }
 
 @theme inline {
