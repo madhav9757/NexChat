@@ -28,8 +28,8 @@ const Body = () => {
   }
 
   return (
-    <ScrollArea className="flex-1 w-full p-4 no-scrollbar">
-      <div className="flex flex-col-reverse gap-2 no-scrollbar">
+    <ScrollArea className="h-full w-full p-4 ">
+      <div className="flex flex-col-reverse gap-2 ">
         {messages.map((msg, index) => {
           const lastByUser =
             index === 0 || messages[index - 1].isCurrentUser !== msg.isCurrentUser;
