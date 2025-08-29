@@ -4,7 +4,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 
-const ConversationItem = ({ conversation, otherMember, otherMembers }) => {
+const ConversationItem = ({ conversation, otherMember, lastMessage }) => {
   const router = useRouter();
 
   // Decide what to display
@@ -36,9 +36,10 @@ const ConversationItem = ({ conversation, otherMember, otherMembers }) => {
 
       <div className="flex flex-col overflow-hidden">
         <span className="font-medium truncate">{displayName}</span>
-        <span className="text-xs text-muted-foreground truncate">
-          {conversation?.lastMessage || "No messages yet"}
-        </span>
+        {lastMessage ?
+          <span className="text-xs text-muted-foreground truncate">
+            {lastMessage?.sender}: {lastMessage?.content || "No messages yet"}
+          </span> : null}
       </div>
     </div>
   );

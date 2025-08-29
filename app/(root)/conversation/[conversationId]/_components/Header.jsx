@@ -2,12 +2,17 @@
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
+import { ArrowLeftCircle, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Header({ otherMember }) {
+  const router = useRouter();
   return (
     <div className="flex items-center justify-between p-3 border-b bg-transparent">
       <div className="flex items-center gap-3">
+        <div onClick={() => router.push("/")} className="cursor-pointer">
+          <ArrowLeftCircle className="h-5 w-5 text-muted-foreground cursor-pointer" />
+        </div>
         <Avatar className="h-10 w-10">
           <AvatarImage src={otherMember?.imageUrl} />
           <AvatarFallback>
@@ -21,9 +26,8 @@ export default function Header({ otherMember }) {
             {otherMember?.username}
           </span>
           <span
-            className={`text-xs ${
-              otherMember?.isOnline ? "text-green-500" : "text-gray-400"
-            }`}
+            className={`text-xs ${otherMember?.isOnline ? "text-green-500" : "text-gray-400"
+              }`}
           >
             {otherMember?.isOnline ? "Online" : "Offline"}
           </span>

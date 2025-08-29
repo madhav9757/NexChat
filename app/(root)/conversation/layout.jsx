@@ -29,6 +29,7 @@ const Layout = ({ children }) => {
                   key={conversationObj.conversation._id}
                   conversation={conversationObj.conversation}
                   otherMember={conversationObj.otherMember}
+                  lastMessage={conversationObj.lastMessage}
                 />
               )
             )
