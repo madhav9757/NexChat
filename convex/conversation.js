@@ -57,6 +57,55 @@ export const get = query({
                 },
                 otherMembers: null
             };
+        } else {
+            const otherMembers = await Promise.all(
+                allConversationMemberships.filter(m => m.memberId !== currentUser._id)).map(async (membership) => {
+                    const member = await ctx.db.get(membership.memberId);
+                    if(!member){
+                        throw new ConvexError("Member not found");
+                    }
+                    return {
+                        username: member.username,
+                    }
+                }
+            )
+        }
+        return{
+            ...conversation,
+            otherMembers,
+            otherMember
         }
     },
+});
+
+export const createGroup = query({
+    args: {
+        name: v.string(),
+        members: v.array(v.id("users"))
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new ConvexError("Unauthorized");
+        }
+
+        const currentUser = await getUserByClerkId(ctx, identity.subject);
+        if (!currentUser) {
+            throw new ConvexError("User Not Found!");
+        }
+
+        const conversationId = await ctx.db.insert("conversation", {
+            isGroup: true,
+            name: args.name,
+        });
+
+        await Promise.all(
+            [...args.members, currentUser._id].map(async (memberId) =>
+                await ctx.db.insert("conversationMembers", {
+                    conversationId,
+                    memberId
+                })
+            )
+        );
+    }
 });

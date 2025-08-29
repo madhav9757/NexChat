@@ -2,10 +2,12 @@
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, Info } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { ArrowLeftCircle, Info, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function Header({ otherMember }) {
+export default function Header({ otherMember, options }) {
   const router = useRouter();
   return (
     <div className="flex items-center justify-between p-3 border-b bg-transparent">
@@ -33,9 +35,29 @@ export default function Header({ otherMember }) {
           </span>
         </div>
       </div>
-      <Button variant="ghost" size="icon">
-        <Info className="h-5 w-5 text-muted-foreground" />
-      </Button>
+      <div className="flex items-center gap-2">
+        {options ?(
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Settings className="h-5 w-5 text-muted-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {options.map((option, id) => {
+                return (
+                  <DropdownMenuItem key={id} onClick={option.onClick} className={cn("font-semibold", {"text-destructive": option.destructive})}>
+                    {option.label}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : null}
+        <Button variant="ghost" size="icon">
+          <Info className="h-5 w-5 text-muted-foreground" />
+        </Button>
+      </div>
     </div>
   );
 }
