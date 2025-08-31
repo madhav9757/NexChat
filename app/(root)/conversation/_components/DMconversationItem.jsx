@@ -4,25 +4,22 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 
-const ConversationItem = ({ conversation, otherMember, lastMessage }) => {
+const ConversationItem = ({ conversation, otherMember, members, lastMessage }) => {
   const router = useRouter();
-
-  // Decide what to display
   const isGroup = conversation?.isGroup;
 
-  // Group: show group name or list of usernames
+  // Display name
   const displayName = isGroup
-    ? conversation?.name || otherMembers?.map((m) => m.username).join(", ")
+    ? conversation?.name || members?.map((m) => m.username).join(", ")
     : otherMember?.username || "Unknown User";
 
-  // Avatar: for group, maybe show first member’s avatar
+  // Avatar: group => conversation image or first member’s avatar
   const avatarSrc = isGroup
-    ? conversation?.imageUrl || otherMembers?.[0]?.imageUrl
+    ? conversation?.imageUrl || members?.[0]?.imageUrl
     : otherMember?.imageUrl;
 
-  const avatarFallback = isGroup
-    ? displayName?.[0]?.toUpperCase() || "G"
-    : otherMember?.username?.[0]?.toUpperCase() || "?";
+  // Avatar fallback (initial letter)
+  const avatarFallback = displayName?.[0]?.toUpperCase() || (isGroup ? "G" : "?");
 
   return (
     <div
@@ -35,11 +32,19 @@ const ConversationItem = ({ conversation, otherMember, lastMessage }) => {
       </Avatar>
 
       <div className="flex flex-col overflow-hidden">
+        {/* Conversation / Group Name */}
         <span className="font-medium truncate">{displayName}</span>
-        {lastMessage ?
+
+        {/* Last message */}
+        {lastMessage ? (
           <span className="text-xs text-muted-foreground truncate">
             {lastMessage?.sender}: {lastMessage?.content || "No messages yet"}
-          </span> : null}
+          </span>
+        ) : (
+          <span className="text-xs text-muted-foreground truncate">
+            No messages yet
+          </span>
+        )}
       </div>
     </div>
   );

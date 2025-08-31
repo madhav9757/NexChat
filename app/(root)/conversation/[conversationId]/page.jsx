@@ -9,6 +9,7 @@ import Body from './_components/body/Body'
 import ChatInput from './_components/input/chatInput'
 import { de } from 'zod/v4/locales'
 import RemoveFriendDialog from './_components/dialog/RemovefriendDialog'
+import DeleteGroupDialog from './_components/dialog/DeleteGroupDialog'
 
 export default function ConversationPage({ params }) {
   const { conversationId } = use(params);
@@ -17,7 +18,7 @@ export default function ConversationPage({ params }) {
   const [removeFriendDialogOpen, setRemoveFriendDialogOpen] = useState(false);
   const [deleteGroupDialogOpen, setDeleteGroupDialogOpen] = useState(false);
   const [leaveGroupDialogOpen, setLeaveGroupDialogOpen] = useState(false);
-  const [callType, setCallType] = useState(null); // ✅ plain JS safe
+  const [callType, setCallType] = useState(null);
 
   if (conversation === undefined) {
     return <div>Loading...</div>;
@@ -32,26 +33,37 @@ export default function ConversationPage({ params }) {
       {/* Header (fixed height) */}
       <div className="shrink-0">
         <Header
+          conversation={conversation}
           otherMember={conversation.otherMember}
-          options={conversation.isGroup ? [
-            {
-              label: "Leave Group",
-              destructive: false,
-              onClick: () => setLeaveGroupDialogOpen(true),
-            },
-            {
-              label: "Delete Group",
-              destructive: true,
-              onClick: () => setDeleteGroupDialogOpen(true),
-              destructive: true,
-            },
-          ] : [
-            {
-              label: "Remove Friend",
-              destructive: true,
-              onClick: () => setRemoveFriendDialogOpen(true),
-            },
-          ]} // todo: fill later
+          otherMembers={conversation.otherMembers}
+          options={
+            conversation.isGroup
+              ? [
+                {
+                  label: "Leave Group",
+                  destructive: false,
+                  onClick: () => setLeaveGroupDialogOpen(true),
+                },
+                {
+                  label: "Delete Group",
+                  destructive: true,
+                  onClick: () => {
+                    if (conversation?.isGroup) {
+                      setDeleteGroupDialogOpen(true);
+                    } else {
+                      console.warn("Tried to delete a non-group conversation");
+                    }
+                  },
+                },
+              ]
+              : [
+                {
+                  label: "Remove Friend",
+                  destructive: true,
+                  onClick: () => setRemoveFriendDialogOpen(true),
+                },
+              ]
+          }
         />
       </div>
 
@@ -71,6 +83,11 @@ export default function ConversationPage({ params }) {
         conversationId={conversationId}
         open={removeFriendDialogOpen}
         setOpen={setRemoveFriendDialogOpen}
+      />
+      <DeleteGroupDialog
+        conversationId={conversationId}
+        open={deleteGroupDialogOpen}
+        setOpen={setDeleteGroupDialogOpen}
       />
     </ConversationContainer>
   );

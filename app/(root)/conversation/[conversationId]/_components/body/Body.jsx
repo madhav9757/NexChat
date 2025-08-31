@@ -26,6 +26,7 @@ const Body = () => {
       </div>
     );
   }
+  console.log("Messages:", messages);
 
   return (
     <ScrollArea className="h-full w-full p-4 ">
@@ -43,6 +44,7 @@ const Body = () => {
               createdAt={msg.message._creationTime}
               type={msg.message.type}
               lastByUser={lastByUser}
+              isGroup={msg.isGroup} 
             />
           );
         })}
