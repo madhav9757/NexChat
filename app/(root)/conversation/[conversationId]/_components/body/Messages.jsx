@@ -6,6 +6,7 @@ export default function Messages({
   senderImage,
   senderName,
   content,
+  seen ,
   createdAt,
   lastByUser,
   isGroup,
@@ -35,6 +36,7 @@ export default function Messages({
         <div className="mt-2 text-xs text-muted-foreground text-right">
           {new Date(createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </div>
+        {seen}
       </div>
       {fromCurrentUser && (
         <Avatar>

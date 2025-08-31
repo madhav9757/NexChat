@@ -70,7 +70,13 @@ export default function ConversationPage({ params }) {
 
       {/* Body (fills remaining space) */}
       <div className="flex-1 overflow-y-auto">
-        <Body />
+        <Body
+          members={
+            conversation.isGroup
+              ? conversation.otherMembers ? conversation.otherMembers : []
+              : conversation.otherMember ? [conversation.otherMember] : []
+          }
+        />
       </div>
 
       {/* Chat Input (fixed height) */}
