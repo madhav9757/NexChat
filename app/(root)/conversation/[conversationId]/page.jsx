@@ -10,6 +10,7 @@ import ChatInput from './_components/input/chatInput'
 import { de } from 'zod/v4/locales'
 import RemoveFriendDialog from './_components/dialog/RemovefriendDialog'
 import DeleteGroupDialog from './_components/dialog/DeleteGroupDialog'
+import LeaveGroupDialog from './_components/dialog/LeaveGroupDialog'
 
 export default function ConversationPage({ params }) {
   const { conversationId } = use(params);
@@ -88,6 +89,11 @@ export default function ConversationPage({ params }) {
         conversationId={conversationId}
         open={deleteGroupDialogOpen}
         setOpen={setDeleteGroupDialogOpen}
+      />
+      <LeaveGroupDialog
+        conversationId={conversationId}
+        open={leaveGroupDialogOpen}
+        setOpen={setLeaveGroupDialogOpen}
       />
     </ConversationContainer>
   );

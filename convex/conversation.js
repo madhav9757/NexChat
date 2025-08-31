@@ -168,3 +168,39 @@ export const deleteGroup = mutation({
         await Promise.all(messages.map(async message => await ctx.db.delete(message._id)));
     }
 })
+
+export const leaveGroup = mutation({
+    args: {
+        conversationId: v.id("conversations")
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new Error("Unauthorized");
+        }
+
+        const currentUser = await getUserByClerkId(ctx, identity.subject);
+
+        if (!currentUser) {
+            throw new ConvexError("User Not Found!");
+        }
+
+        const conversation = await ctx.db.get(args.conversationId);
+
+        if (!conversation) {
+            throw new ConvexError("Conversation Not Found!");
+        }
+
+        const membership = await ctx.db
+            .query('conversationMembers')
+            .withIndex('byMemberIdConversationId', q => q.eq('memberId', currentUser._id).eq('conversationId', args.conversationId))
+            .unique();
+
+        if (!membership) {
+            throw new ConvexError("you are not a member of this conversation");
+        }
+
+        await ctx.db.delete(membership._id);
+    }
+})

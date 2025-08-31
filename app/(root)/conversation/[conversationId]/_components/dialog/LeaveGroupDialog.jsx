@@ -16,13 +16,13 @@ import {
 import { toast } from 'sonner'
 import { Delete } from 'lucide-react'
 
-const DeleteGroupDialog = ({ conversationId, open, setOpen }) => {
-    const [deleteGroup, pending] = useMutationState(api.conversation.deleteGroup)
+const LeaveGroupDialog = ({ conversationId, open, setOpen }) => {
+    const [LeaveGroup, pending] = useMutationState(api.conversation.leaveGroup)
 
     const handleRemove = async () => {
         try {
-            await deleteGroup({ conversationId })
-            toast.success('Group deleted successfully')
+            await LeaveGroup({ conversationId })
+            toast.success('Group left successfully')
             setOpen(false)
         } catch (error) {
             toast.error(
@@ -35,9 +35,9 @@ const DeleteGroupDialog = ({ conversationId, open, setOpen }) => {
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Group</AlertDialogTitle>
+                    <AlertDialogTitle>Leave Group</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to delete this group? You will lose the
+                        Are you sure you want to leave this group? You will lose the
                         conversation history and won’t be able to chat unless you create a new group.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
@@ -48,7 +48,7 @@ const DeleteGroupDialog = ({ conversationId, open, setOpen }) => {
                         disabled={pending}
                         className="bg-destructive text-white hover:bg-destructive/90"
                     >
-                        {pending ? 'Deleting...' : 'Delete'}
+                        {pending ? 'Leaving...' : 'Leave'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
@@ -56,4 +56,4 @@ const DeleteGroupDialog = ({ conversationId, open, setOpen }) => {
     )
 }
 
-export default DeleteGroupDialog
+export default LeaveGroupDialog
