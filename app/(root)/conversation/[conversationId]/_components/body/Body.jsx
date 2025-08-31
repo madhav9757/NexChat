@@ -50,13 +50,16 @@ const Body = ({ members }) => {
   };
 
   const getSeenMessage = (messageId) => {
-    const seenUsers = members.filter(member => member.lastSeenMessageId === messageId).map(user => user.username.split(" "))[0];
+    const seenUsers = members
+      .filter(member => member.lastSeenMessageId === messageId)
+      .map(user => user.username); // just collect usernames
+
     if (seenUsers.length === 0) {
       return null;
     }
 
     return formatSeenBy(seenUsers);
-  }
+  };
 
   if (!messages) {
     return (
@@ -82,7 +85,7 @@ const Body = ({ members }) => {
           const lastByUser =
             index === 0 || messages[index - 1].isCurrentUser !== msg.isCurrentUser;
 
-          const seenMessage = isCurrentUser ? getSeenMessage(msg.message._id) : null;
+          const seenMessage = msg.isCurrentUser ? getSeenMessage(msg.message._id) : null;
           return (
             <Messages
               key={msg.message._id}
