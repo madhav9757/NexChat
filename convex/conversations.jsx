@@ -31,7 +31,7 @@ export const get = query({
         );
 
         const conversationWithDetails = await Promise.all(
-            conversations.map(async (conversation) => {
+            conversations.map(async (conversation, index) => {
                 const allConversationMemberships = await ctx.db
                     .query("conversationMembers")
                     .withIndex("byConversationId", (q) =>
@@ -41,8 +41,22 @@ export const get = query({
 
                 const lastMessage = await getLastMessageDetails(ctx, conversation.lastMessageId);
 
+                const lastSeenMessage = conversationMemberships[index].lastSeenMessage ?
+                    await ctx.db.get(conversationMemberships[index].lastSeenMessage) : null;
+
+                const lastSeenMessageTime = lastSeenMessage ? lastSeenMessage._creationTime : -1;
+
+                const unseenMessages = await ctx.db
+                    .query("messages")
+                    .withIndex("byConversationId", (q) =>
+                        q.eq("conversationId", conversation._id)
+                    )
+                    .filter((q) => q.gt(q.field("_creationTime"), lastSeenMessageTime))
+                    .filter((q) => q.neq(q.field("senderId"), currentUser._id))
+                    .collect();
+
                 if (conversation.isGroup) {
-                    return { conversation, members: allConversationMemberships, lastMessage };
+                    return { conversation, members: allConversationMemberships, lastMessage, unseenCount: unseenMessages.length };
                 } else {
                     const otherMembership = allConversationMemberships.filter(
                         (membership) => membership.memberId !== currentUser._id
@@ -53,7 +67,7 @@ export const get = query({
                     }
 
                     const otherMember = await ctx.db.get(otherMembership.memberId);
-                    return { conversation, otherMember, lastMessage };
+                    return { conversation, otherMember, lastMessage, unseenCount: unseenMessages.length };
                 }
             })
         );

@@ -42,6 +42,7 @@ const Layout = ({ children }) => {
                   conversation={conversationObj.conversation}
                   members={conversationObj.members}
                   lastMessage={conversationObj.lastMessage}
+                  unseenCount={conversationObj.unseenCount}
                 />
               ) : (
                 <DMConversationItem
@@ -49,6 +50,7 @@ const Layout = ({ children }) => {
                   conversation={conversationObj.conversation}
                   otherMember={conversationObj.otherMember}
                   lastMessage={conversationObj.lastMessage}
+                  unseenCount={conversationObj.unseenCount}
                 />
               )
             )
