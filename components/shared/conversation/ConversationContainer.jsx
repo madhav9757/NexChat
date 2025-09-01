@@ -9,8 +9,12 @@ const ConversationContainer = ({ children }) => {
         h-[calc(100svh-32px)] 
         flex flex-col 
         overflow-hidden   /* ensures content doesn’t spill */
-        p-2 
-        gap-2
+        p-4               /* more breathing room */
+        gap-3 
+        bg-background 
+        border 
+        shadow-md 
+        rounded-xl
       "
     >
       {children}

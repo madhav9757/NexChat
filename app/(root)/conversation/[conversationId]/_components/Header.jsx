@@ -51,7 +51,7 @@ export default function Header({
     <div className="flex items-center justify-between p-3 border-b bg-transparent">
       {/* Left section: back button + avatar + name */}
       <div className="flex items-center gap-3">
-        <div onClick={() => router.push("/")} className="cursor-pointer">
+        <div onClick={() => router.push("/conversation")} className="cursor-pointer">
           <ArrowLeftCircle className="h-5 w-5 text-muted-foreground cursor-pointer" />
         </div>
 

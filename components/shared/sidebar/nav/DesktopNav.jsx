@@ -15,15 +15,14 @@ const DesktopNav = () => {
 
   return (
     <TooltipProvider>
-      <Card className="hidden lg:flex lg:flex-col lg:justify-between lg:items-center h-full w-16 px-2 py-4 shadow-md border border-border/50 bg-background">
-
+      <Card className="hidden lg:flex lg:flex-col lg:justify-between h-full w-16 px-2 py-4 shadow-xl border-r border-border/50 bg-background transition-all duration-300">
         {/* Navigation Section */}
         <nav className="w-full">
           <ul className="flex flex-col items-center gap-4">
-            {paths.map(({ href, icon, name, active, count }, index) => (
-              <li key={index} className="relative">
+            {paths.map(({ href, icon: Icon, name, active, count }, index) => (
+              <li key={index} className="relative w-full flex justify-center">
                 {active && (
-                  <span className="absolute left-[-10px] top-1/2 -translate-y-1/2 h-6 w-1 rounded bg-primary" />
+                  <span className="absolute left-[-16px] top-1/2 -translate-y-1/2 h-8 w-1.5 rounded-r-lg bg-primary transition-all duration-300" />
                 )}
 
                 <Tooltip delayDuration={100}>
@@ -37,17 +36,19 @@ const DesktopNav = () => {
                       <Button
                         size="icon"
                         variant={active ? 'default' : 'ghost'}
-                        className="w-10 h-10 relative"
+                        className="w-10 h-10 relative group-hover:bg-accent group-hover:text-accent-foreground"
                       >
-                        {icon}
-                        {count > 0 && (
-                          <Badge
-                            className="absolute -top-1 -right-1 text-xs font-bold px-1 py-0 h-4 min-w-[1rem] flex items-center justify-center rounded-full"
-                            variant="destructive"
-                          >
-                            {count}
-                          </Badge>
-                        )}
+                        <div className="flex items-center justify-center">
+                          {React.cloneElement(Icon, { className: 'h-6 w-6' })}
+                          {count > 0 && (
+                            <Badge
+                              className="absolute -top-1 -right-1 text-xs font-bold px-1 py-0 h-4 min-w-[1rem] flex items-center justify-center rounded-full"
+                              variant="destructive"
+                            >
+                              {count}
+                            </Badge>
+                          )}
+                        </div>
                       </Button>
                     </Link>
                   </TooltipTrigger>

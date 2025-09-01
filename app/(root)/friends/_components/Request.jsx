@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import useMutationState from "@/hooks/useMutationState";
 import { ConvexError } from "convex/values";
+import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Request({ sender, request }) {
@@ -40,7 +41,7 @@ export default function Request({ sender, request }) {
     };
 
     return (
-        <div className="flex items-center justify-between p-3 rounded-xl hover:bg-accent transition-colors shadow-sm">
+        <div className="flex justify-between items-center gap-4 p-3 rounded-xl bg-card hover:bg-accent transition-colors shadow-sm">
             {/* Sender Info */}
             <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -52,7 +53,7 @@ export default function Request({ sender, request }) {
 
                 <div className="flex flex-col">
                     <span className="font-medium leading-none">{sender.username}</span>
-                    <span className="text-xs text-muted-foreground truncate max-w-[140px]">
+                    <span className="text-xs text-muted-foreground truncate max-w-[160px]">
                         {sender.email}
                     </span>
                 </div>
@@ -63,19 +64,18 @@ export default function Request({ sender, request }) {
                 <Button
                     onClick={handleAccept}
                     disabled={acceptPending}
-                    size="sm"
-                    className="h-8 px-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 bg-green-500 hover:bg-green-600 text-white"
+                    size="icon"
+                    className="bg-green-500 hover:bg-green-600 text-white"
                 >
-                    Accept
+                    <Check className="h-4 w-4" />
                 </Button>
                 <Button
                     onClick={handleDeny}
                     disabled={denyPending}
-                    size="sm"
+                    size="icon"
                     variant="destructive"
-                    className="h-8 px-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
                 >
-                    Decline
+                    <X className="h-4 w-4" />
                 </Button>
             </div>
         </div>

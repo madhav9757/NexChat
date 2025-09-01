@@ -14,22 +14,29 @@ function FriendsPage() {
   const isLoading = requests === undefined;
 
   return (
-    <div className="h-full flex gap-2">
+    <div className="h-full flex gap-2 p-2">
       <ItemList title="Friends" Action={<AddFileDialog />}>
         {isLoading ? (
-          <Loader2 className="animate-spin" />
+          <div className="flex justify-center items-center py-6">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          </div>
         ) : requests.length === 0 ? (
-          <p className="text-muted-foreground">No friend requests</p>
+          <div className="flex flex-col items-center justify-center py-6 text-center text-sm text-muted-foreground">
+            <p>No friend requests</p>
+          </div>
         ) : (
-          requests.map((reqObj) => (
-            <Request
-              key={reqObj.request._id}
-              sender={reqObj.sender}
-              request={reqObj.request}
-            />
-          ))
+          <div className="space-y-2">
+            {requests.map((reqObj) => (
+              <Request
+                key={reqObj.request._id}
+                sender={reqObj.sender}
+                request={reqObj.request}
+              />
+            ))}
+          </div>
         )}
       </ItemList>
+
       <ConversationFallback />
     </div>
   );

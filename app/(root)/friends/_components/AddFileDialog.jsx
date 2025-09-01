@@ -27,7 +27,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
-import { UserPlus } from 'lucide-react'
+import { Loader2, UserPlus } from 'lucide-react'
 import useMutationState from '@/hooks/useMutationState'
 import { toast } from 'sonner'
 import { ConvexError } from 'convex/values'
@@ -63,10 +63,9 @@ const AddFileDialog = () => {
     <Dialog>
       <Tooltip>
         <TooltipTrigger asChild>
-          {/* DialogTrigger must wrap the button */}
           <DialogTrigger asChild>
-            <Button size="icon" variant="outline">
-              <UserPlus />
+            <Button size="icon" variant="outline" aria-label="Add Friend">
+              <UserPlus className="h-4 w-4" />
             </Button>
           </DialogTrigger>
         </TooltipTrigger>
@@ -77,18 +76,22 @@ const AddFileDialog = () => {
         <DialogHeader>
           <DialogTitle>Add Friends</DialogTitle>
           <DialogDescription>
-            Send request to connect with your Friend
+            Send a request to connect with your friend
           </DialogDescription>
         </DialogHeader>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2">
                     <FormControl>
                       <Input
                         placeholder="friend@example.com"
@@ -97,7 +100,11 @@ const AddFileDialog = () => {
                       />
                     </FormControl>
                     <Button type="submit" disabled={pending}>
-                      {pending ? "Sending..." : "Send Request"}
+                      {pending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        "Send"
+                      )}
                     </Button>
                   </div>
                   <FormMessage />
