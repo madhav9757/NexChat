@@ -5,12 +5,12 @@ import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import Header from "./_components/Header";
 import Body from "./_components/body/Body";
-import ChatInput from "./_components/input/ChatInput";
-import RemoveFriendDialog from "./_components/dialog/RemoveFriendDialog";
-import DeleteGroupDialog from "./_components/dialog/DeleteGroupDialog";
-import LeaveGroupDialog from "./_components/dialog/LeaveGroupDialog";
 import { Loader2 } from "lucide-react";
 import { use, useState } from "react";
+import ChatInput from "./_components/input/chatInput";
+import RemoveFriendDialog from "./_components/dialog/RemovefriendDialog";
+import DeleteGroupDialog from "./_components/dialog/DeleteGroupDialog";
+import LeaveGroupDialog from "./_components/dialog/LeaveGroupDialog";
 
 export default function ConversationPage({ params }) {
   const { conversationId } = use(params); // ✅ fixed
