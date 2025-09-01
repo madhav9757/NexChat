@@ -83,7 +83,6 @@ export default function ConversationPage({ params }) {
         />
       </div>
 
-      {/* Chat Input */}
       <div className="shrink-0">
         <ChatInput
           conversationId={conversationId}
