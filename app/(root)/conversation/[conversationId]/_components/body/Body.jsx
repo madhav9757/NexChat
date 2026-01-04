@@ -7,98 +7,127 @@ import React, { useEffect } from "react";
 import Messages from "./Messages";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useMutationState from "@/hooks/useMutationState";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
+import { format } from "date-fns";
 
 const Body = ({ members }) => {
   const { conversationId } = useConversation();
   const messages = useQuery(api.messages.get, { id: conversationId });
-  const [markRead, pending] = useMutationState(api.conversation.markRead);
+  const [markRead] = useMutationState(api.conversation.markRead);
 
   useEffect(() => {
     if (messages && messages.length > 0) {
       markRead({
         conversationId,
         messageId: messages[0].message._id
-      })
+      });
     }
-  }, [messages?.length, conversationId, markRead])
+  }, [messages?.length, conversationId, markRead]);
 
-  const formatSeenBy = (names) => {
-    switch (names.length) {
-      case 0:
-        return <p className="text-muted-foreground text-sm text-right" >{"No one has seen this message"}</p>;
-      case 1:
-        return <p className="text-muted-foreground text-sm text-right" >{`Seen by ${names[0]}`}</p>;
-      default:
-        return (
-          <Tooltip>
-            <TooltipTrigger>
-              <p className="text-muted-foreground text-sm text-right" >{`${names[0]} and ${names.length - 1} others have seen this message`}</p>
-            </TooltipTrigger>
-            <TooltipContent>
-              <ul>
-                {names.map((name, index) => (
-                  <li key={index} className="text-muted-foreground text-sm text-right">
-                    {name}
-                  </li>
-                ))}
-              </ul>
-            </TooltipContent>
-          </Tooltip>
-        )
-    }
-  };
-
-  const getSeenMessage = (messageId) => {
+  const renderReadReceipts = (messageId) => {
     const seenUsers = members
       .filter(member => member.lastSeenMessageId === messageId)
-      .map(user => user.username); // just collect usernames
+      .map(user => ({
+        username: user.username,
+        imageUrl: user.imageUrl,
+      }));
 
-    if (seenUsers.length === 0) {
-      return null;
-    }
+    if (seenUsers.length === 0) return null;
 
-    return formatSeenBy(seenUsers);
+    return (
+      <div className="flex justify-end gap-1 mt-1 px-2">
+        <TooltipProvider>
+          {seenUsers.map((user, i) => (
+            <Tooltip key={i}>
+              <TooltipTrigger asChild>
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                >
+                  <Avatar className="h-4 w-4 border border-background shadow-sm">
+                    <AvatarImage src={user.imageUrl} />
+                    <AvatarFallback className="text-[6px]">
+                      {user.username[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                </motion.div>
+              </TooltipTrigger>
+              <TooltipContent side="top" className="text-[10px] py-1 px-2">
+                Seen by {user.username}
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </TooltipProvider>
+      </div>
+    );
   };
 
   if (!messages) {
     return (
-      <div className="flex-1 w-full flex items-center justify-center text-gray-500">
-        Loading...
+      <div className="flex-1 w-full flex flex-col items-center justify-center gap-2">
+        <div className="h-8 w-8 rounded-full border-2 border-zinc-200 border-t-blue-600 animate-spin" />
+        <p className="text-xs font-medium text-zinc-400 uppercase tracking-widest">Encrypting</p>
       </div>
     );
   }
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 w-full flex items-center justify-center text-gray-500">
-        No messages yet
+      <div className="flex-1 w-full flex flex-col items-center justify-center text-zinc-400 gap-2">
+        <div className="p-4 rounded-full bg-zinc-50 dark:bg-zinc-900">
+           {/* You can put a ghost icon here */}
+        </div>
+        <p className="text-sm font-medium">No messages yet</p>
       </div>
     );
   }
-  console.log("Messages:", messages);
 
   return (
-    <ScrollArea className="h-full w-full p-4 ">
-      <div className="flex flex-col-reverse gap-2 ">
+    <ScrollArea className="h-full w-full">
+      <div className="flex flex-col-reverse gap-4 p-6 overflow-x-hidden">
         {messages.map((msg, index) => {
-          const lastByUser =
-            index === 0 || messages[index - 1].isCurrentUser !== msg.isCurrentUser;
+          const isFirstMessage = index === messages.length - 1;
+          const nextMessage = messages[index + 1];
+          const prevMessage = messages[index - 1];
 
-          const seenMessage = msg.isCurrentUser ? getSeenMessage(msg.message._id) : null;
+          // Logic to show date separators
+          const showDateSeparator = !nextMessage || 
+            format(new Date(msg.message._creationTime), 'yyyy-MM-dd') !== 
+            format(new Date(nextMessage.message._creationTime), 'yyyy-MM-dd');
+
+          // Grouping logic: Is this the last message in a "burst" from this user?
+          const lastByUser = !prevMessage || prevMessage.isCurrentUser !== msg.isCurrentUser;
+
           return (
-            <Messages
-              key={msg.message._id}
-              fromCurrentUser={msg.isCurrentUser}
-              senderImage={msg.senderImage}
-              senderName={msg.senderName}
-              content={msg.message.content}
-              seen={seenMessage}
-              createdAt={msg.message._creationTime}
-              type={msg.message.type}
-              lastByUser={lastByUser}
-              isGroup={msg.isGroup}
-            />
+            <React.Fragment key={msg.message._id}>
+              {/* Individual Message */}
+              <div className="flex flex-col">
+                <Messages
+                  fromCurrentUser={msg.isCurrentUser}
+                  senderImage={msg.senderImage}
+                  senderName={msg.senderName}
+                  content={msg.message.content}
+                  createdAt={msg.message._creationTime}
+                  type={msg.message.type}
+                  lastByUser={lastByUser}
+                  isGroup={msg.isGroup}
+                />
+                {msg.isCurrentUser && renderReadReceipts(msg.message._id)}
+              </div>
+
+              {/* Date Separator */}
+              {showDateSeparator && (
+                <div className="flex items-center justify-center my-6">
+                  <div className="h-[1px] flex-1 bg-zinc-100 dark:bg-zinc-800" />
+                  <span className="mx-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 bg-white dark:bg-zinc-950 px-2">
+                    {format(new Date(msg.message._creationTime), 'MMMM do, yyyy')}
+                  </span>
+                  <div className="h-[1px] flex-1 bg-zinc-100 dark:bg-zinc-800" />
+                </div>
+              )}
+            </React.Fragment>
           );
         })}
       </div>

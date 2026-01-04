@@ -1,23 +1,47 @@
+"use client";
+
 import React from 'react';
 import DesktopNav from './nav/DesktopNav';
 import MobileNav from './nav/MobileNav';
+import { motion } from 'framer-motion';
 
 const SidebarWrapper = ({ children }) => {
   return (
-    <div className="flex flex-col lg:flex-row h-full">
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:block lg:w-fit border-r border-transparent bg-transparent transition-all duration-300 ease-in-out">
+    <div className="flex flex-col lg:flex-row h-screen w-full bg-white dark:bg-zinc-950 overflow-hidden">
+      
+      {/* --- DESKTOP SIDEBAR --- */}
+      {/* We use a subtle border and a slightly different background to create depth */}
+      <aside className="hidden lg:flex flex-col h-full border-r border-zinc-200/60 dark:border-zinc-800/60 bg-zinc-50/30 dark:bg-zinc-900/20 backdrop-blur-xl">
         <DesktopNav />
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 w-full p-4 pb-24 lg:pb-4 overflow-y-auto">
-        {children}
+      {/* --- MAIN CONTENT --- */}
+      {/* - pb-24 on mobile ensures the bottom nav doesn't cover the last message/item.
+          - smooth scroll and custom scrollbar styling (optional via CSS)
+      */}
+      <main className="flex-1 h-full w-full relative overflow-y-auto overflow-x-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="h-full p-4 lg:p-6 pb-24 lg:pb-6"
+        >
+          {children}
+        </motion.div>
       </main>
 
-      {/* Mobile Bottom Nav */}
-      <div className="fixed bottom-0 left-0 w-full lg:hidden z-50">
-        <MobileNav />
+      {/* --- MOBILE BOTTOM NAV --- */}
+      {/* - Glassmorphism: backdrop-blur-lg + transparent background
+          - Floating effect: we use p-4 and a rounded-t-3xl to make it feel detached and modern
+      */}
+      <div className="fixed bottom-0 left-0 w-full lg:hidden z-50 px-4 pb-4">
+        <motion.div 
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl border border-zinc-200/50 dark:border-zinc-800/50 shadow-[0_-8px_30px_rgb(0,0,0,0.04)] rounded-[2rem] overflow-hidden"
+        >
+          <MobileNav />
+        </motion.div>
       </div>
     </div>
   );

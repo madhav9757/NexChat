@@ -2,13 +2,9 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-  TooltipProvider,
-} from '@radix-ui/react-tooltip'
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip'
 import { useNavigation } from '@/hooks/useNavigation'
 import { UserButton } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
@@ -20,88 +16,68 @@ const MobileNav = () => {
   const paths = useNavigation()
   const { isActive } = useConversation()
 
+  // Do not render if in an active conversation to maximize screen real estate
   if (isActive) return null
 
   return (
     <TooltipProvider>
       <nav
         className={cn(
-          // Outer container: fixed, centered, and responsive
-          'fixed bottom-4 left-1/2 z-50 -translate-x-1/2 w-[95%] max-w-md',
-          'bg-card/80 dark:bg-card/80 backdrop-blur-md',
-          'border border-border shadow-xl',
-          'rounded-full p-2 flex justify-around items-center gap-2',
-          'lg:hidden'
+          "fixed bottom-6 left-1/2 z-50 -translate-x-1/2 w-[90%] max-w-fit px-4 py-3",
+          "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl",
+          "border border-white/20 dark:border-zinc-800/50 shadow-2xl shadow-black/10",
+          "rounded-[2.5rem] flex items-center justify-center gap-4 lg:hidden"
         )}
       >
-        {/* Navigation links */}
-        {paths.map(({ href, icon: Icon, name, active, count }, index) => (
-          <Tooltip key={index} delayDuration={150}>
-            <TooltipTrigger asChild>
-              <Link href={href} aria-label={name}>
+        <ul className="flex items-center gap-2">
+          {paths.map(({ href, icon: Icon, name, active, count }, index) => (
+            <li key={index} className="relative">
+              <Link href={href}>
                 <Button
                   size="icon"
                   variant="ghost"
                   className={cn(
-                    'relative w-11 h-11 rounded-full transition-all duration-300',
-                    active
-                      ? 'bg-primary/10 text-primary hover:bg-primary/20'
-                      : 'text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                    "relative w-12 h-12 rounded-full transition-all duration-500",
+                    active ? "text-zinc-950 dark:text-white" : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
                   )}
                 >
-                  {/* Icon with consistent sizing */}
-                  {React.cloneElement(Icon, { className: 'h-6 w-6' })}
-                  {/* Badge for notifications */}
-                  {count > 0 && (
-                    <Badge
-                      className="absolute -top-1 -right-1 text-xs px-1 py-0 h-4 min-w-[1rem] flex items-center justify-center rounded-full"
-                      variant="destructive"
-                    >
-                      {count}
-                    </Badge>
+                  {/* Floating active background pill */}
+                  {active && (
+                    <motion.div
+                      layoutId="mobile-nav-pill"
+                      className="absolute inset-0 bg-zinc-100 dark:bg-zinc-800 rounded-full -z-10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
                   )}
+
+                  <div className="relative">
+                    {React.cloneElement(Icon, { 
+                      className: 'h-6 w-6',
+                      strokeWidth: active ? 2 : 1.5 
+                    })}
+                    
+                    {count > 0 && (
+                      <Badge
+                        className="absolute -top-2 -right-2 h-5 min-w-[1.25rem] flex items-center justify-center rounded-full border-2 border-white dark:border-zinc-900 bg-blue-600 text-[10px] font-bold text-white px-1"
+                      >
+                        {count}
+                      </Badge>
+                    )}
+                  </div>
                 </Button>
               </Link>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              sideOffset={5}
-              className="bg-accent text-accent-foreground text-xs px-2 py-1 rounded-md shadow-md"
-            >
-              {name}
-            </TooltipContent>
-          </Tooltip>
-        ))}
+            </li>
+          ))}
+        </ul>
 
-        {/* Theme toggle and User/Profile button */}
-        <div className="flex items-center gap-2">
-          <Tooltip delayDuration={150}>
-            <TooltipTrigger asChild>
-              <ModeToggle />
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              sideOffset={5}
-              className="bg-accent text-accent-foreground text-xs px-2 py-1 rounded-md shadow-md"
-            >
-              Theme
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip delayDuration={150}>
-            <TooltipTrigger asChild>
-              {/* UserButton wrapped to control styling */}
-              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center border-2 border-transparent hover:border-border transition-colors">
-                <UserButton />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent
-              side="top"
-              sideOffset={5}
-              className="bg-accent text-accent-foreground text-xs px-2 py-1 rounded-md shadow-md"
-            >
-              Profile
-            </TooltipContent>
-          </Tooltip>
+        {/* Separator Line */}
+        <div className="h-6 w-[1px] bg-zinc-200 dark:bg-zinc-800 mx-1" />
+
+        <div className="flex items-center gap-3">
+          <ModeToggle />
+          <div className="relative group p-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm">
+             <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
+          </div>
         </div>
       </nav>
     </TooltipProvider>

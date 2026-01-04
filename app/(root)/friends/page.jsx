@@ -6,38 +6,75 @@ import React from "react";
 import AddFileDialog from "./_components/AddFileDialog";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2 } from "lucide-react";
+import { Loader2, UserPlus2, Inbox } from "lucide-react";
 import Request from "./_components/Request";
+import { motion, AnimatePresence } from "framer-motion";
 
 function FriendsPage() {
   const requests = useQuery(api.requests.get);
   const isLoading = requests === undefined;
 
   return (
-    <div className="h-full flex gap-2 p-2">
-      <ItemList title="Friends" Action={<AddFileDialog />}>
-        {isLoading ? (
-          <div className="flex justify-center items-center py-6">
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          </div>
-        ) : requests.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-6 text-center text-sm text-muted-foreground">
-            <p>No friend requests</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {requests.map((reqObj) => (
-              <Request
-                key={reqObj.request._id}
-                sender={reqObj.sender}
-                request={reqObj.request}
-              />
-            ))}
-          </div>
-        )}
+    <div className="h-full flex gap-0 lg:gap-2 p-0 lg:p-2 bg-zinc-50/50 dark:bg-transparent">
+      <ItemList 
+        title="Friends" 
+        Action={<AddFileDialog />}
+      >
+        <div className="flex flex-col h-full overflow-hidden px-1">
+          {isLoading ? (
+            <div className="flex-1 flex flex-col justify-center items-center gap-2">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-600/60" strokeWidth={1.5} />
+              <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Syncing</p>
+            </div>
+          ) : requests.length === 0 ? (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex-1 flex flex-col items-center justify-center py-12 text-center"
+            >
+              <div className="h-16 w-16 bg-zinc-100 dark:bg-zinc-900 rounded-[2rem] flex items-center justify-center mb-4">
+                 <Inbox className="h-8 w-8 text-zinc-300 dark:text-zinc-700" strokeWidth={1.2} />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">All caught up</h3>
+              <p className="text-xs text-zinc-500 mt-1 max-w-[180px]">No new friend requests at the moment.</p>
+            </motion.div>
+          ) : (
+            <ScrollArea className="flex-1 pr-3 -mr-3">
+              <div className="space-y-1 py-2">
+                <div className="flex items-center gap-2 px-2 mb-4">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-[10px] font-bold text-blue-600">
+                    {requests.length}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                    Pending Requests
+                  </span>
+                </div>
+                
+                <AnimatePresence mode="popLayout">
+                  {requests.map((reqObj) => (
+                    <motion.div
+                      key={reqObj.request._id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Request
+                        sender={reqObj.sender}
+                        request={reqObj.request}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </ScrollArea>
+          )}
+        </div>
       </ItemList>
 
-      <ConversationFallback />
+      <div className="hidden lg:block flex-1">
+        <ConversationFallback />
+      </div>
     </div>
   );
 }

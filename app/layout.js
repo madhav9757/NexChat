@@ -1,7 +1,8 @@
+// layout.jsx (server component)
 import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import AppShell from "@/components/AppShell";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -25,7 +26,7 @@ export const metadata = {
     siteName: "NexChat",
     images: [
       {
-        url: "/og-image.png", // replace with your image
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "NexChat preview",
@@ -37,13 +38,13 @@ export const metadata = {
     card: "summary_large_image",
     title: "NexChat",
     description: "Realtime chat app with modern UI",
-    images: ["/og-image.png"], // replace with your image
+    images: ["/og-image.png"],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
@@ -56,7 +57,7 @@ export default function RootLayout({ children }) {
           <TooltipProvider>
             <AppShell>
               {children}
-              <Toaster richColors />
+              <Toaster richColors position="top-right" />
             </AppShell>
           </TooltipProvider>
         </ThemeProvider>
