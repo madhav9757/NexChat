@@ -39,18 +39,19 @@ export default function Messages({
       <div className={cn("flex flex-col max-w-[75%]", fromCurrentUser ? "items-end" : "items-start")}>
         {/* Bubble */}
         <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.1 }}
           className={cn(
             "relative px-4 py-2.5 shadow-sm transition-all duration-200",
             // Posh Bubble Shapes
             fromCurrentUser
-              ? "bg-indigo-600 text-white" 
+              ? "bg-indigo-600 text-white"
               : "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-100 dark:border-zinc-800",
-            
+
             // Border Radius Logic for grouping
-            fromCurrentUser 
-              ? cn("rounded-2xl rounded-tr-none", !lastByUser && "rounded-tr-2xl") 
+            fromCurrentUser
+              ? cn("rounded-2xl rounded-tr-none", !lastByUser && "rounded-tr-2xl")
               : cn("rounded-2xl rounded-tl-none", !lastByUser && "rounded-tl-2xl")
           )}
         >

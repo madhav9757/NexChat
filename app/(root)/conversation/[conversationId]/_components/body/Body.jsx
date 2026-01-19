@@ -31,7 +31,7 @@ const Body = ({ members }) => {
       .filter(member => member.lastSeenMessageId === messageId)
       .map(user => ({
         username: user.username,
-        imageUrl: user.imageUrl,
+        imgUrl: user.imgUrl,
       }));
 
     if (seenUsers.length === 0) return null;
@@ -43,11 +43,12 @@ const Body = ({ members }) => {
             <Tooltip key={i}>
               <TooltipTrigger asChild>
                 <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.1 }}
                 >
                   <Avatar className="h-4 w-4 border border-background shadow-sm">
-                    <AvatarImage src={user.imageUrl} />
+                    <AvatarImage src={user.imgUrl} />
                     <AvatarFallback className="text-[6px]">
                       {user.username[0]}
                     </AvatarFallback>
@@ -77,7 +78,7 @@ const Body = ({ members }) => {
     return (
       <div className="flex-1 w-full flex flex-col items-center justify-center text-zinc-400 gap-2">
         <div className="p-4 rounded-full bg-zinc-50 dark:bg-zinc-900">
-           {/* You can put a ghost icon here */}
+          {/* You can put a ghost icon here */}
         </div>
         <p className="text-sm font-medium">No messages yet</p>
       </div>
@@ -93,8 +94,8 @@ const Body = ({ members }) => {
           const prevMessage = messages[index - 1];
 
           // Logic to show date separators
-          const showDateSeparator = !nextMessage || 
-            format(new Date(msg.message._creationTime), 'yyyy-MM-dd') !== 
+          const showDateSeparator = !nextMessage ||
+            format(new Date(msg.message._creationTime), 'yyyy-MM-dd') !==
             format(new Date(nextMessage.message._creationTime), 'yyyy-MM-dd');
 
           // Grouping logic: Is this the last message in a "burst" from this user?

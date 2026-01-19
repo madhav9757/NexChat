@@ -11,14 +11,14 @@ const LoadingLogo = ({ size = 100 }) => {
         {/* Outer Ripple Effect */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ 
-            opacity: [0, 0.15, 0], 
+          animate={{
+            opacity: [0, 0.15, 0],
             scale: [1, 1.4, 1.8],
           }}
-          transition={{ 
-            duration: 2, 
-            repeat: Infinity, 
-            ease: "easeInOut" 
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            ease: "easeInOut"
           }}
           className="absolute h-32 w-32 rounded-full border border-blue-500 dark:border-blue-400"
         />
@@ -30,18 +30,18 @@ const LoadingLogo = ({ size = 100 }) => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.3 }}
           className="relative z-10"
           style={{ width: size, height: size }}
         >
           <motion.div
-            animate={{ 
+            animate={{
               y: [0, -8, 0],
             }}
-            transition={{ 
-              duration: 3, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
             }}
           >
             <Image
@@ -57,25 +57,25 @@ const LoadingLogo = ({ size = 100 }) => {
       </div>
 
       {/* Loading Text - Subtle & Elegant */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.1 }}
         className="mt-12 flex flex-col items-center gap-3"
       >
         <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-zinc-400 dark:text-zinc-500">
           Initializing Nexus
         </span>
-        
+
         {/* Minimal Progress Line */}
         <div className="h-[1px] w-24 bg-zinc-200 dark:bg-zinc-800 overflow-hidden relative">
-          <motion.div 
+          <motion.div
             initial={{ left: "-100%" }}
             animate={{ left: "100%" }}
-            transition={{ 
-              duration: 1.5, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
+            transition={{
+              duration: 0.8,
+              repeat: Infinity,
+              ease: "easeInOut"
             }}
             className="absolute top-0 bottom-0 w-12 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
           />

@@ -30,7 +30,7 @@ export default defineSchema({
     conversations: defineTable({
         name: v.optional(v.string()),
         isGroup: v.boolean(),
-        lastMessageId: v.optional(v.id("messages")) 
+        lastMessageId: v.optional(v.id("messages"))
     }),
 
     conversationMembers: defineTable({
@@ -40,7 +40,7 @@ export default defineSchema({
     })
         .index("byMemberId", ["memberId"])
         .index("byConversationId", ["conversationId"])
-        .index("byMemberIdConversationId", ["memberId","conversationId"]),
+        .index("byMemberIdConversationId", ["memberId", "conversationId"]),
 
     messages: defineTable({
         senderId: v.id("users"),
@@ -48,6 +48,7 @@ export default defineSchema({
         type: v.string(),
         content: v.array(v.string()),
     })
-        .index("byConversationId", ["conversationId"]),
+        .index("byConversationId", ["conversationId"])
+        .index("byConversationId_CreationTime", ["conversationId", "_creationTime"]),
 
 });

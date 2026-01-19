@@ -3,12 +3,12 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { 
-  MessageCircle, 
-  ArrowRight, 
-  Sparkles, 
-  ShieldCheck, 
-  Zap 
+import {
+  MessageCircle,
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  Zap
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,20 +17,19 @@ import { Badge } from "@/components/ui/badge";
 export default function Home() {
   // Animation variants for staggered entrance
   const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
+        duration: 0.2,
+        staggerChildren: 0.03,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
   };
 
   return (
@@ -47,7 +46,7 @@ export default function Home() {
       >
         {/* Top Branding Section */}
         <div className="flex flex-col items-center mb-8 text-center">
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="mb-4 p-3 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800"
           >
@@ -66,8 +65,8 @@ export default function Home() {
             <motion.div variants={itemVariants} className="flex items-center justify-between mb-8 p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                   <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "h-10 w-10" } }} />
-                   <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-zinc-900 rounded-full" />
+                  <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "h-10 w-10" } }} />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-zinc-900 rounded-full" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Account Active</p>
@@ -80,16 +79,16 @@ export default function Home() {
             </motion.div>
 
             <div className="space-y-4">
-               <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-100 dark:border-zinc-800">
-                    <Zap className="w-4 h-4 text-amber-500" />
-                    <span className="text-xs font-medium">Fast Sync</span>
-                  </div>
-                  <div className="flex items-center gap-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-100 dark:border-zinc-800">
-                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                    <span className="text-xs font-medium">Encrypted</span>
-                  </div>
-               </motion.div>
+              <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-100 dark:border-zinc-800">
+                  <Zap className="w-4 h-4 text-amber-500" />
+                  <span className="text-xs font-medium">Fast Sync</span>
+                </div>
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-100 dark:border-zinc-800">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  <span className="text-xs font-medium">Encrypted</span>
+                </div>
+              </motion.div>
 
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link href="/conversation" className="block w-full">
@@ -103,7 +102,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="mt-8 flex justify-center gap-6 text-zinc-400 dark:text-zinc-600"
         >

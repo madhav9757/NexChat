@@ -32,9 +32,10 @@ export default function Request({ sender, request }) {
     const isPending = acceptPending || denyPending;
 
     return (
-        <motion.div 
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
             className="group relative flex justify-between items-center gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300"
         >
             {/* Subtle left accent line that appears on hover */}
@@ -74,7 +75,7 @@ export default function Request({ sender, request }) {
                 >
                     <Check className="h-4 w-4" strokeWidth={3} />
                 </Button>
-                
+
                 <Button
                     onClick={handleDeny}
                     disabled={isPending}

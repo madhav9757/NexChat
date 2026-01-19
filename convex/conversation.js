@@ -153,8 +153,12 @@ export const deleteGroup = mutation({
             .withIndex('byConversationId', q => q.eq('conversationId', args.conversationId))
             .collect();
 
-        if (!memberships || memberships.length <= 2) {
-            throw new ConvexError("This conversattion does not have any members");
+        if (!conversation.isGroup) {
+            throw new ConvexError("This is not a group conversation");
+        }
+
+        if (!memberships || memberships.length === 0) {
+            throw new ConvexError("This conversation has no members");
         }
 
         const messages = await ctx.db
@@ -235,7 +239,7 @@ export const markRead = mutation({
         const lastMessage = await ctx.db.get(args.messageId);
 
         await ctx.db.patch(membership._id, {
-            lastSeenMessage : lastMessage ? lastMessage._id : undefined
+            lastSeenMessage: lastMessage ? lastMessage._id : undefined
         })
     }
 })

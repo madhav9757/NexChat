@@ -25,18 +25,16 @@ const ConversationItem = ({
     : otherMember?.username || "Unknown User";
 
   // Formatted Time for the "posh" corner timestamp
-  const timestamp = lastMessage?.createdAt 
+  const timestamp = lastMessage?.createdAt
     ? formatDistanceToNowStrict(new Date(lastMessage.createdAt), { addSuffix: false })
-        .replace('seconds', 's')
-        .replace('minutes', 'm')
-        .replace('hours', 'h')
-        .replace('days', 'd')
+      .replace('seconds', 's')
+      .replace('minutes', 'm')
+      .replace('hours', 'h')
+      .replace('days', 'd')
     : "";
 
   return (
-    <motion.div
-      whileHover={{ scale: 0.98 }}
-      whileTap={{ scale: 0.96 }}
+    <div
       onClick={() => router.push(`/conversation/${conversation?._id}`)}
       className={cn(
         "group relative flex w-full items-center gap-3 p-3 rounded-2xl cursor-pointer transition-all duration-200 select-none",
@@ -46,9 +44,9 @@ const ConversationItem = ({
     >
       {/* Active Indicator Line */}
       {isActive && (
-        <motion.div 
+        <motion.div
           layoutId="active-pill"
-          className="absolute left-0 w-1 h-6 bg-blue-600 dark:bg-blue-500 rounded-r-full" 
+          className="absolute left-0 w-1 h-6 bg-blue-600 dark:bg-blue-500 rounded-r-full"
         />
       )}
 
@@ -58,23 +56,23 @@ const ConversationItem = ({
           // Posh Avatar Stack for Groups
           <div className="relative h-10 w-10">
             <Avatar className="absolute bottom-0 left-0 h-7 w-7 border-2 border-white dark:border-zinc-950 z-10">
-              <AvatarImage src={members?.[0]?.imageUrl} />
+              <AvatarImage src={members?.[0]?.imgUrl} />
               <AvatarFallback className="text-[10px] bg-blue-100 text-blue-700">G</AvatarFallback>
             </Avatar>
             <Avatar className="absolute top-0 right-0 h-7 w-7 border-2 border-white dark:border-zinc-950">
-              <AvatarImage src={members?.[1]?.imageUrl} />
+              <AvatarImage src={members?.[1]?.imgUrl} />
               <AvatarFallback className="text-[10px] bg-zinc-200 uppercase">{displayName?.[0]}</AvatarFallback>
             </Avatar>
           </div>
         ) : (
           <Avatar className="h-11 w-11 shadow-sm border border-zinc-200/50 dark:border-zinc-800/50">
-            <AvatarImage src={otherMember?.imageUrl} alt={displayName} />
+            <AvatarImage src={otherMember?.imgUrl} alt={displayName} />
             <AvatarFallback className="bg-gradient-to-tr from-zinc-200 to-zinc-100 dark:from-zinc-800 dark:to-zinc-900">
               {displayName?.[0]?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
         )}
-        
+
         {/* Presence Dot (Online/Offline) */}
         {!isGroup && (
           <span className="absolute bottom-0 right-0 block h-3 w-3 rounded-full bg-green-500 border-2 border-white dark:border-zinc-950" />
@@ -98,8 +96,8 @@ const ConversationItem = ({
         <div className="flex items-center justify-between gap-2">
           <p className={cn(
             "text-xs truncate leading-snug",
-            unseenCount > 0 
-              ? "text-zinc-900 dark:text-zinc-100 font-bold" 
+            unseenCount > 0
+              ? "text-zinc-900 dark:text-zinc-100 font-bold"
               : "text-zinc-500 dark:text-zinc-400 font-medium"
           )}>
             {lastMessage ? (
@@ -122,7 +120,7 @@ const ConversationItem = ({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

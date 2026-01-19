@@ -46,16 +46,16 @@ const MobileNav = () => {
                     <motion.div
                       layoutId="mobile-nav-pill"
                       className="absolute inset-0 bg-zinc-100 dark:bg-zinc-800 rounded-full -z-10"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      transition={{ duration: 0.15 }}
                     />
                   )}
 
                   <div className="relative">
-                    {React.cloneElement(Icon, { 
+                    {React.cloneElement(Icon, {
                       className: 'h-6 w-6',
-                      strokeWidth: active ? 2 : 1.5 
+                      strokeWidth: active ? 2 : 1.5
                     })}
-                    
+
                     {count > 0 && (
                       <Badge
                         className="absolute -top-2 -right-2 h-5 min-w-[1.25rem] flex items-center justify-center rounded-full border-2 border-white dark:border-zinc-900 bg-blue-600 text-[10px] font-bold text-white px-1"
@@ -76,7 +76,7 @@ const MobileNav = () => {
         <div className="flex items-center gap-3">
           <ModeToggle />
           <div className="relative group p-0.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm">
-             <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
+            <UserButton afterSignOutUrl="/" appearance={{ elements: { avatarBox: "h-8 w-8" } }} />
           </div>
         </div>
       </nav>

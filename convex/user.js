@@ -14,7 +14,15 @@ export const create = internalMutation({
             .withIndex("byClerkId", (q) => q.eq("clerkId", args.clerkId))
             .unique();
 
-        if (existing) return;
+        if (existing) {
+            // If user already exists, update their info
+            await ctx.db.patch(existing._id, {
+                username: args.username,
+                email: args.email,
+                imgUrl: args.imgUrl,
+            });
+            return;
+        }
 
         await ctx.db.insert("users", args);
     },
@@ -34,5 +42,19 @@ export const getById = internalQuery({
     args: { id: v.id("users") },
     async handler(ctx, args) {
         return await ctx.db.get(args.id);
+    },
+});
+
+export const deleteUser = internalMutation({
+    args: { clerkId: v.string() },
+    async handler(ctx, args) {
+        const user = await ctx.db
+            .query("users")
+            .withIndex("byClerkId", (q) => q.eq("clerkId", args.clerkId))
+            .unique();
+
+        if (user) {
+            await ctx.db.delete(user._id);
+        }
     },
 });

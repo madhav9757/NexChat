@@ -26,7 +26,7 @@ export default function ConversationPage({ params }) {
       <AnimatePresence mode="wait">
         {conversation === undefined ? (
           /* --- POSH LOADING STATE --- */
-          <motion.div 
+          <motion.div
             key="loading"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -34,15 +34,15 @@ export default function ConversationPage({ params }) {
             className="h-full w-full flex flex-col items-center justify-center gap-3 bg-zinc-50/50 dark:bg-transparent"
           >
             <div className="relative flex items-center justify-center">
-               <Loader2 className="h-8 w-8 animate-spin text-blue-600/80" strokeWidth={1.5} />
-               <div className="absolute h-12 w-12 rounded-full border border-blue-500/10 animate-pulse" />
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600/80" strokeWidth={1.5} />
+              <div className="absolute h-12 w-12 rounded-full border border-blue-500/10 animate-pulse" />
             </div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">Secure Link</p>
           </motion.div>
 
         ) : conversation === null ? (
           /* --- POSH NOT FOUND STATE --- */
-          <motion.div 
+          <motion.div
             key="not-found"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -57,11 +57,11 @@ export default function ConversationPage({ params }) {
 
         ) : (
           /* --- THE MAIN STAGE --- */
-          <motion.div 
+          <motion.div
             key="content"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.1 }}
             className="h-full w-full flex flex-col overflow-hidden"
           >
             {/* Header: Fixed top */}
@@ -73,24 +73,24 @@ export default function ConversationPage({ params }) {
                 options={
                   conversation.isGroup
                     ? [
-                        {
-                          label: "Leave Group",
-                          destructive: false,
-                          onClick: () => setLeaveGroupDialogOpen(true),
-                        },
-                        {
-                          label: "Delete Group",
-                          destructive: true,
-                          onClick: () => setDeleteGroupDialogOpen(true),
-                        },
-                      ]
+                      {
+                        label: "Leave Group",
+                        destructive: false,
+                        onClick: () => setLeaveGroupDialogOpen(true),
+                      },
+                      {
+                        label: "Delete Group",
+                        destructive: true,
+                        onClick: () => setDeleteGroupDialogOpen(true),
+                      },
+                    ]
                     : [
-                        {
-                          label: "Remove Friend",
-                          destructive: true,
-                          onClick: () => setRemoveFriendDialogOpen(true),
-                        },
-                      ]
+                      {
+                        label: "Remove Friend",
+                        destructive: true,
+                        onClick: () => setRemoveFriendDialogOpen(true),
+                      },
+                    ]
                 }
               />
             </div>

@@ -17,13 +17,10 @@ function Layout({ children }) {
       <AnimatePresence mode="wait">
         <motion.div
           key="main-content"
-          initial={{ opacity: 0, scale: 0.99, y: 5 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.99, y: -5 }}
-          transition={{ 
-            duration: 0.3, 
-            ease: [0.22, 1, 0.36, 1] // Custom cubic-bezier for "posh" physics
-          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
           className="h-full w-full"
         >
           {children}

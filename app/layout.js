@@ -17,12 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "NexChat",
-  description: "Realtime chat app",
+  title: "NexChat | Realtime Intelligent Messaging",
+  description: "Experience the next generation of collaborative intelligence with NexChat. Fast, secure, and beautiful realtime messaging.",
+  keywords: ["chat", "realtime", "ai", "collaboration", "nextjs", "convex"],
+  authors: [{ name: "Keshav" }],
   openGraph: {
-    title: "NexChat",
-    description: "Realtime chat app with modern UI",
-    url: "https://yourdomain.com",
+    title: "NexChat | Realtime Intelligent Messaging",
+    description: "Fast, secure, and beautiful realtime messaging for the modern web.",
+    url: "https://nex-chat.vercel.app",
     siteName: "NexChat",
     images: [
       {
@@ -32,19 +34,20 @@ export const metadata = {
         alt: "NexChat preview",
       },
     ],
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "NexChat",
-    description: "Realtime chat app with modern UI",
+    description: "Fast, secure, and beautiful realtime messaging.",
     images: ["/og-image.png"],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

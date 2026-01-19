@@ -22,16 +22,14 @@ const GroupConversationItem = ({
   // Premium short-form time (e.g., 5m, 2h)
   const formattedTime = lastMessage?._creationTime
     ? formatDistanceToNowStrict(new Date(lastMessage._creationTime), { addSuffix: false })
-        .replace('seconds', 's')
-        .replace('minutes', 'm')
-        .replace('hours', 'h')
-        .replace('days', 'd')
+      .replace('seconds', 's')
+      .replace('minutes', 'm')
+      .replace('hours', 'h')
+      .replace('days', 'd')
     : null;
 
   return (
-    <motion.div
-      whileHover={{ x: 4 }}
-      whileTap={{ scale: 0.98 }}
+    <div
       onClick={() => router.push(`/conversation/${conversation?._id}`)}
       className={cn(
         "group relative flex w-full items-center gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-200 select-none",
@@ -41,9 +39,10 @@ const GroupConversationItem = ({
     >
       {/* Active Indicator Bar */}
       {isActive && (
-        <motion.div 
+        <motion.div
           layoutId="active-indicator"
-          className="absolute left-0 w-1 h-8 bg-blue-600 dark:bg-blue-500 rounded-r-full" 
+          transition={{ duration: 0.1 }}
+          className="absolute left-0 w-1 h-8 bg-blue-600 dark:bg-blue-500 rounded-r-full"
         />
       )}
 
@@ -53,12 +52,12 @@ const GroupConversationItem = ({
           <>
             {/* The "Main" member avatar */}
             <Avatar className="absolute bottom-0 left-0 h-8 w-8 border-2 border-white dark:border-zinc-950 z-10 shadow-sm">
-              <AvatarImage src={members[0]?.imageUrl} />
+              <AvatarImage src={members[0]?.imgUrl} />
               <AvatarFallback className="text-[10px]">{members[0]?.username?.[0]}</AvatarFallback>
             </Avatar>
             {/* The "Secondary" member avatar */}
             <Avatar className="absolute top-0 right-0 h-8 w-8 border-2 border-white dark:border-zinc-950 shadow-sm">
-              <AvatarImage src={members[1]?.imageUrl || members[0]?.imageUrl} />
+              <AvatarImage src={members[1]?.imgUrl || members[0]?.imgUrl} />
               <AvatarFallback className="text-[10px] bg-zinc-200 dark:bg-zinc-800">
                 {members[1]?.username?.[0] || "+"}
               </AvatarFallback>
@@ -92,8 +91,8 @@ const GroupConversationItem = ({
         <div className="flex items-center justify-between gap-2">
           <p className={cn(
             "text-xs truncate leading-snug",
-            unseenCount > 0 
-              ? "text-zinc-900 dark:text-zinc-100 font-bold" 
+            unseenCount > 0
+              ? "text-zinc-900 dark:text-zinc-100 font-bold"
               : "text-zinc-500 dark:text-zinc-400 font-medium"
           )}>
             {lastMessage ? (
@@ -116,7 +115,7 @@ const GroupConversationItem = ({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

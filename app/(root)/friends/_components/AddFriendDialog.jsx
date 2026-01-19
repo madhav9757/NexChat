@@ -42,7 +42,7 @@ const addFriendSchema = z.object({
     .email('Please enter a valid email address'),
 })
 
-const AddFileDialog = () => {
+const AddFriendDialog = () => {
   const [createRequest, pending] = useMutationState(api.request.create);
 
   const form = useForm({
@@ -68,9 +68,9 @@ const AddFileDialog = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <Button 
-                size="icon" 
-                variant="outline" 
+              <Button
+                size="icon"
+                variant="outline"
                 className="rounded-full h-11 w-11 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all active:scale-95 shadow-sm"
               >
                 <UserPlus className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
@@ -124,10 +124,10 @@ const AddFileDialog = () => {
                   </FormItem>
                 )}
               />
-              
-              <Button 
-                type="submit" 
-                disabled={pending} 
+
+              <Button
+                type="submit"
+                disabled={pending}
                 className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
               >
                 <AnimatePresence mode="wait">
@@ -160,4 +160,4 @@ const AddFileDialog = () => {
   )
 }
 
-export default AddFileDialog
+export default AddFriendDialog

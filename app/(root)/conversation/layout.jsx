@@ -24,14 +24,14 @@ const Layout = ({ children }) => {
 
   return (
     <div className="h-full w-full flex bg-white dark:bg-zinc-950">
-      <ItemList 
-        title="Messages" 
+      <ItemList
+        title="Messages"
         Action={<CreateGroupDialog />}
       >
         <AnimatePresence mode="wait">
           {conversations === undefined ? (
             /* --- POSH LOADING STATE --- */
-            <motion.div 
+            <motion.div
               key="loading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -42,12 +42,12 @@ const Layout = ({ children }) => {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600 z-10" />
                 <div className="absolute h-12 w-12 rounded-full border-2 border-blue-500/20 animate-ping" />
               </div>
-              <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Syncing Chats</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Syncing</p>
             </motion.div>
 
           ) : !conversations ? (
             /* --- POSH ERROR STATE --- */
-            <motion.div 
+            <motion.div
               key="error"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -62,7 +62,7 @@ const Layout = ({ children }) => {
 
           ) : sortedConversations.length === 0 ? (
             /* --- POSH EMPTY STATE --- */
-            <motion.div 
+            <motion.div
               key="empty"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const Layout = ({ children }) => {
 
           ) : (
             /* --- POSH CONVERSATION LIST --- */
-            <motion.div 
+            <motion.div
               key="list"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -91,10 +91,10 @@ const Layout = ({ children }) => {
                 <motion.div
                   key={conversationObj.conversation._id}
                   initial={{ opacity: 0, x: -10 }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     x: 0,
-                    transition: { delay: index * 0.05 } 
+                    transition: { duration: 0.1 }
                   }}
                 >
                   {conversationObj.conversation.isGroup ? (
